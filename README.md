@@ -25,6 +25,7 @@ detailed instructions.
 2. Put in credentials needed
 3. Run the following commands in your terminal to install gcloud tools
 
+
     gcloud init
     gcloud components install app-engine-java
     gcloud auth application-default login
