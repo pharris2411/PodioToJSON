@@ -27,8 +27,11 @@ detailed instructions.
 
 
     gcloud init
+
     gcloud components install app-engine-java
+
     gcloud auth application-default login
+    
 
 ### Maven
 #### Running locally
@@ -65,7 +68,11 @@ Some of the Podio category IDs defined in `PodioToJSON` had changed in 2018. Exa
 
 Luckily these are relatively easy to find, simply navigate to the event's Podio page and open the HTML page source. There will be a list of `<li>` elements for the top navigation, and they will have the attribute `data-app-id` defined. Example for Members App ID `20458996`:
 
-    <li class="app tooltip tooltip-delayed tooltip-html tooltip-convert-newlines app-20458996 " data-app-id="20458996" data-tooltip-gravity="nw" data-tooltip-template-data="{&quot;name&quot;:&quot;Participants&quot;}" data-tooltip-template="space_nav">
+    <li class="app tooltip tooltip-delayed tooltip-html tooltip-convert-newlines app-20458996 " 
+    data-app-id="20458996" 
+    data-tooltip-gravity="nw" 
+    data-tooltip-template-data="{&quot;name&quot;:&quot;Participants&quot;}" 
+    data-tooltip-template="space_nav">
           <a href="....">
            <span class="icon app-icon-24 icon-6"></span>
            <span class="title">Participants</span>
