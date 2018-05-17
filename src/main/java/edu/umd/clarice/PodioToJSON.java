@@ -49,25 +49,27 @@ public class PodioToJSON {
 
         PodioToJSONConfig config = new PodioToJSONConfig();
 
-        Cache cache = null;
-        try {
-            CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
-            Map<Object, Object> properties = new HashMap<>();
-            properties.put(GCacheFactory.EXPIRATION_DELTA, 600);
-            cache = cacheFactory.createCache(properties);
-            if(cache.containsKey("podio")){
-                System.out.println("Trying to load cached podio");
-                String value = (String) cache.get("podio");
-                // String str = new String(value, StandardCharsets.UTF_8);
-                return value;
-            }
-            else {
-                System.out.println("Cache loaded, did not find podio entry");
-            }
 
-        } catch (CacheException e) {
-            System.out.println("Unable to configure cache manager!");
-        }
+        // I was not able to get the google app engine memcache server to actually expire things after 10 minutes. It always seemed to live forever
+        // Cache cache = null;
+        // try {
+        //     CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
+        //     Map<Object, Object> properties = new HashMap<>();
+        //     properties.put(GCacheFactory.EXPIRATION_DELTA, 600);
+        //     cache = cacheFactory.createCache(properties);
+            // if(cache.containsKey("podio")){
+            //     System.out.println("Trying to load cached podio");
+            //     String value = (String) cache.get("podio");
+            //     // String str = new String(value, StandardCharsets.UTF_8);
+            //     return value;
+            // }
+            // else {
+            //     System.out.println("Cache loaded, did not find podio entry");
+            // }
+
+        // } catch (CacheException e) {
+        //     System.out.println("Unable to configure cache manager!");
+        // }
 
         TimeZone tz = TimeZone.getTimeZone("UTC");
         formatAttendify.setTimeZone(tz);
@@ -169,10 +171,10 @@ public class PodioToJSON {
         // writer.println(json.toString(4));
         // writer.close();
         String jsonString = json.toString(4);
-        if(cache != null){
-            System.out.println("Caching podio results");
-            cache.put("podio", jsonString);
-        }
+        // if(cache != null){
+        //     System.out.println("Caching podio results");
+        //     cache.put("podio", jsonString);
+        // }
 
         return jsonString;
     }
