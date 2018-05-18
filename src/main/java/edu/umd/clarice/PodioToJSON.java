@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +45,8 @@ public class PodioToJSON {
     private SimpleDateFormat formatPodio = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private SimpleDateFormat formatAttendify = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
 
+    private boolean filterToCurrentYear = true;
+    private String currentYear = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
 
     public String connect() throws ParseException, JSONException, FileNotFoundException, UnsupportedEncodingException {
 
@@ -129,12 +132,12 @@ public class PodioToJSON {
 
         // if(scheduleMaps!= null) 
         //     System.out.println(scheduleMaps.size() + " " + scheduleMaps);
-        // if(facultyMaps!= null) 
-        //     System.out.println(facultyMaps.size() + " " + facultyMaps);
-        // if(staffMaps!= null) 
-        //     System.out.println(staffMaps.size() + " " + staffMaps);
-        // if(membersMaps!= null) 
-        //     System.out.println(membersMaps.size() + " " + membersMaps);
+        if(facultyMaps!= null) 
+            System.out.println(facultyMaps.size() + " " + facultyMaps);
+        if(staffMaps!= null) 
+            System.out.println(staffMaps.size() + " " + staffMaps);
+        if(membersMaps!= null) 
+            System.out.println(membersMaps.size() + " " + membersMaps);
         // // if(venuesMaps!= null) 
         //     // System.out.println(venuesMaps.size() + " " + venuesMaps);
         // if(festivalInfoMaps!= null) 
@@ -223,6 +226,10 @@ public class PodioToJSON {
         JSONObject facultyJSON = new JSONObject();
         for(Map<String, String> m : facultyMaps){
             if(m.containsKey("firstName") && m.containsKey("lastName")) {
+                if(filterToCurrentYear && (!m.containsKey("yearParticipating") || !m.get("yearParticipating").equals(currentYear))){
+                    System.out.println("Skipping over " + m.get("firstName") + " " + m.get("lastName") + " as the yearParticipating is " + m.get("yearParticipating"));
+                    continue;
+                }
                 JSONObject j = new JSONObject();
                 j.put("type", "speaker");
                 j.put("firstName", m.get("firstName"));
@@ -256,7 +263,15 @@ public class PodioToJSON {
         //Build staff JSON
         JSONObject staffJSON = new JSONObject();
         for(Map<String, String> m : staffMaps){
+
+
             if(m.containsKey("firstName") && m.containsKey("lastName")) {
+
+                if(filterToCurrentYear && (!m.containsKey("yearParticipating") || !m.get("yearParticipating").equals(currentYear))){
+                    System.out.println("Skipping over " + m.get("firstName") + " " + m.get("lastName") + " as the yearParticipating is " + m.get("yearParticipating"));
+                    continue;
+                }
+
                 JSONObject j = new JSONObject();
                 j.put("type", "speaker");
                 j.put("firstName", m.get("firstName"));
@@ -467,6 +482,10 @@ public class PodioToJSON {
                         map.put("shown", (String) fvv.getValues().get(0).get("value"));
                     else if(fvv.getExternalId().equals("image-2"))
                         map.put("photoURI", ((Map)fvv.getValues().get(0).get("value")).get("link").toString());
+                    else if(fvv.getExternalId().equals("year-participating")){
+                        map.put("yearParticipating",  (String) ((Map)fvv.getValues().get(0).get("value")).get("text"));
+                        map.put("yearParticipatingActive",  (String) ((Map)fvv.getValues().get(0).get("value")).get("status"));
+                    }
                 }
                 if(map.get("shown").equals("1.0000"))
                     ret.add(map);
@@ -507,6 +526,10 @@ public class PodioToJSON {
                     } else if(fvv.getExternalId().equals("image-2")){
                         //System.out.println(fvv.getValues().get(0));
                         map.put("photoURI", ((Map)fvv.getValues().get(0).get("value")).get("link").toString());
+                    } else if(fvv.getExternalId().equals("year-participating")){
+                       
+                        map.put("yearParticipating",  (String) ((Map)fvv.getValues().get(0).get("value")).get("text"));
+                        map.put("yearParticipatingActive",  (String) ((Map)fvv.getValues().get(0).get("value")).get("status"));
                     }
                 }
                 ret.add(map);
@@ -522,6 +545,7 @@ public class PodioToJSON {
         do {
             ItemsResponse ir = itemAPI.getItems(MEMBERSAPPID, 500, offset, null, null);
             total = ir.getTotal();
+            System.out.println("Total members " + total);
             offset+=500;
             for (ItemBadge ib : ir.getItems()) {
                 Map<String,String> map = new HashMap<String,String>();
