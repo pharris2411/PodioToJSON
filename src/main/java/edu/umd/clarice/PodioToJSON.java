@@ -230,7 +230,10 @@ public class PodioToJSON {
                 if(filterToCurrentYear && (!m.containsKey("yearParticipating") || !m.get("yearParticipating").equals(currentYear))){
                     System.out.println("Skipping over " + m.get("firstName") + " " + m.get("lastName") + " as the yearParticipating is " + m.get("yearParticipating"));
                     continue;
+                } else {
+                    System.out.println("Including " + m.get("firstName") + " " + m.get("lastName") + " as the yearParticipating is " + m.get("yearParticipating"));
                 }
+
                 JSONObject j = new JSONObject();
                 j.put("type", "speaker");
                 j.put("firstName", m.get("firstName"));
@@ -488,8 +491,8 @@ public class PodioToJSON {
                         map.put("yearParticipatingActive",  (String) ((Map)fvv.getValues().get(0).get("value")).get("status"));
                     }
                 }
-                if(map.get("shown").equals("1.0000"))
-                    ret.add(map);
+                // if(map.get("shown").equals("1.0000"))
+                    // ret.add(map);
             }
         } while (offset <= total);
         return ret;
@@ -581,8 +584,8 @@ public class PodioToJSON {
                         }
                     }
                 }
-                if(map.get("shown").equals("1.0000"))
-                    ret.add(map);
+                // if(map.get("shown").equals("1.0000"))
+                    // ret.add(map);
             }
         } while (offset <= total);
         return ret;
