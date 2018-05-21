@@ -74,8 +74,9 @@ public class PodioToJSON {
         //     System.out.println("Unable to configure cache manager!");
         // }
 
-        TimeZone tz = TimeZone.getTimeZone("UTC");
+        TimeZone tz = TimeZone.getTimeZone("EST5EDT");
         formatAttendify.setTimeZone(tz);
+        formatPodio.setTimeZone(tz);
 
         ResourceFactory resourceFactory = new ResourceFactory(
                 new OAuthClientCredentials(config.apiUsername, config.apiKey),
