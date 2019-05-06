@@ -16,7 +16,7 @@ import java.nio.charset.StandardCharsets;
 public final class PodioToJSONConfig {
 	// create an API key on the Podio site
 	public final String apiUsername = "podiotojson";
-	public final String apiKey = "";
+	public final String apiKey = "02d8c37daa314338bcd577af7e5eb8a9";
    	
    	// backup(?) login with an email address and password
 	public final String loginEmail = "";
