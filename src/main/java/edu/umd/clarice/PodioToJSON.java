@@ -35,13 +35,33 @@ import com.google.appengine.api.memcache.jsr107cache.GCacheFactory;
 
 
 public class PodioToJSON {
-    private static int EVENTSAPPID = 20459011;
-    private static int FACULTYAPPID = 20459008;
-    private static int STAFFAPPID = 17882615;
-    private static int MEMBERSAPPID = 20458996;
-    private static int VENUESAPPID = 17882575;
-    private static int FESTIVALINFOAPPID = 17882858;
-    private static int LOCALINFOAPPID = 17883266;
+
+
+    /*
+
+    Luckily these are relatively easy to find, simply navigate to the event's Podio page and open the HTML page source. There will be a list of <li> elements for the top navigation, and they will have the attribute data-app-id defined. Example for Members App ID 20458996:
+
+    <li class="app tooltip tooltip-delayed tooltip-html tooltip-convert-newlines app-20458996 " 
+    data-app-id="20458996" 
+    data-tooltip-gravity="nw" 
+    data-tooltip-template-data="{&quot;name&quot;:&quot;Participants&quot;}" 
+    data-tooltip-template="space_nav">
+          <a href="....">
+           <span class="icon app-icon-24 icon-6"></span>
+           <span class="title">Participants</span>
+         </a>
+    </li> 
+
+    */
+
+    private static int EVENTSAPPID = 22679941; // Schedule category in Podio
+    private static int FACULTYAPPID = 20459008; // Faculty
+    private static int STAFFAPPID = 17882615; // Staff
+    private static int MEMBERSAPPID = 20458996; // Participants
+    private static int VENUESAPPID = 17882575; // Venues
+    private static int FESTIVALINFOAPPID = 17882858; // Festival info
+    private static int LOCALINFOAPPID = 17883266; // Local info
+
     private SimpleDateFormat formatPodio = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private SimpleDateFormat formatAttendify = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
 
@@ -492,7 +512,7 @@ public class PodioToJSON {
                     }
                 }
                 // if(map.get("shown").equals("1.0000"))
-                    // ret.add(map);
+                ret.add(map);
             }
         } while (offset <= total);
         return ret;
@@ -585,7 +605,7 @@ public class PodioToJSON {
                     }
                 }
                 // if(map.get("shown").equals("1.0000"))
-                    // ret.add(map);
+                ret.add(map);
             }
         } while (offset <= total);
         return ret;
